@@ -2,6 +2,12 @@ import string
 import sys
 
 def main():
+    """Read a string and display its length and character counts.
+    Accept one command-line argument, or prompt for input if it is missing
+    or empty. Count uppercase letters, lowercase letters, punctuation,
+    whitespace, and digits. A newline read from stdin counts as whitespace.
+    Print an AssertionError message if more than one argument is provided.
+    """
     try:
         if len(sys.argv) > 2:
             raise AssertionError("more than one argument is provided")
