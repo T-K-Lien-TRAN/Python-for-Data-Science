@@ -33,7 +33,7 @@ def main():
                 space += 1
             elif character.isdigit():
                 digit += 1
-        print(f"The text contains {len(text)} characters")
+        print(f"The text contains {len(text)} characters:")
         print(f"{uppercase} upper letters")
         print(f"{lowercase} lower letters")
         print(f"{punctuation} punctuation marks")
