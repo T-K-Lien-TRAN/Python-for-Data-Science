@@ -1,2 +1,190 @@
 Module-0-ex05:
 python3 -m flake8 building.py
+
+Module-0-ex00:
+
+In Python, **list, tuple, set, and dict store collections of data**. **`append()` is a method that adds an item to a list.**
+
+| Type | Example | Main feature |
+|---|---|---|
+| `list` | `["apple", "banana"]` | Ordered, editable, allows duplicates |
+| `tuple` | `("apple", "banana")` | Ordered, cannot change its items after creation |
+| `set` | `{"apple", "banana"}` | Unique items, no positional indexing |
+| `dict` | `{"name": "Lien", "age": 25}` | Stores key–value pairs |
+
+### 1. `list`: an editable sequence
+
+Use a list when you want to store items and add, remove, or change them.
+
+```python
+fruits = ["apple", "banana", "apple"]
+
+print(fruits[0])       # apple — indexing starts at 0
+print(fruits[1])       # banana
+
+fruits[1] = "orange"   # Change an item
+fruits.append("pear")  # Add an item at the end
+
+print(fruits)
+# ['apple', 'orange', 'apple', 'pear']
+```
+
+Duplicates are allowed: `"apple"` appears twice.
+
+### 2. `tuple`: a sequence whose items cannot be changed
+
+You can access tuple items like list items, but you cannot replace, add, or remove them.
+
+```python
+point = (10, 20)
+
+print(point[0])  # 10
+print(point[1])  # 20
+
+point[0] = 15    # TypeError
+```
+
+A tuple is useful for grouping values, such as coordinates.
+
+**A tuple containing just one item needs a comma:**
+
+```python
+one_item = (10,)  # tuple
+number = (10)     # int
+```
+
+### 3. `set`: a collection of unique items
+
+A set automatically removes duplicates. Do not rely on its display order.
+
+```python
+numbers = {1, 2, 2, 3}
+
+print(numbers)  # Contains only 1, 2, and 3
+
+numbers.add(4)       # Add an item
+numbers.discard(2)   # Remove an item if present
+
+print(3 in numbers) # True
+```
+
+You cannot access a set by position:
+
+```python
+numbers[0]  # TypeError
+```
+
+To create an empty set, use **`set()`**. Empty braces `{}` create a dictionary.
+
+### 4. `dict`: data accessed through keys
+
+A dictionary connects each **key** to a **value**.
+
+```python
+student = {
+    "name": "Lien",
+    "school": "42 Nice",
+    "language": "Python"
+}
+
+print(student["name"])  # Lien
+
+student["language"] = "Dart"  # Update a value
+student["city"] = "Nice"      # Add a new key–value pair
+
+print(student["city"])        # Nice
+```
+
+Instead of using a position such as `student[0]`, you usually use a meaningful key such as `student["name"]`.
+
+**Keys are unique:** assigning to an existing key replaces its value.
+
+```python
+student["city"] = "Paris"
+print(student["city"])  # Paris
+```
+
+### 5. `append()`: add ONE item to the end of a list
+
+```python
+numbers = [1, 2]
+
+numbers.append(3)
+
+print(numbers)  # [1, 2, 3]
+```
+
+If you append a list, that whole list becomes **one item**:
+
+```python
+numbers = [1, 2]
+numbers.append([3, 4])
+
+print(numbers)  # [1, 2, [3, 4]]
+```
+
+To add each item separately, use **`extend()`**:
+
+```python
+numbers = [1, 2]
+numbers.extend([3, 4])
+
+print(numbers)  # [1, 2, 3, 4]
+```
+
+**Common mistake:** `append()` changes the existing list and returns `None`.
+
+```python
+numbers = [1, 2]
+
+result = numbers.append(3)
+
+print(numbers)  # [1, 2, 3]
+print(result)   # None
+```
+
+So write `numbers.append(3)`, rather than `numbers = numbers.append(3)`.
+
+The operation for adding data depends on the collection:
+
+```python
+my_list.append("apple")
+my_set.add("apple")
+my_dict["fruit"] = "apple"
+# A tuple has no append() method.
+```
+
+Module-0-ex05:
+
+Your system protects its Python installation, so `pip` cannot install packages globally. Install Flake8 in a **virtual environment** instead.
+
+Run these commands from your project folder:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install flake8
+alias norminette=flake8
+norminette building.py
+```
+
+If creating the environment fails because `venv` is missing, install it first:
+
+```bash
+sudo apt install python3-venv
+```
+
+Then repeat the commands above.
+
+Whenever you open a new terminal, activate the environment again from the same folder:
+
+```bash
+source .venv/bin/activate
+alias norminette=flake8
+```
+
+**No output from `norminette building.py` means the check passed.** To leave the virtual environment:
+
+```bash
+deactivate
+```
