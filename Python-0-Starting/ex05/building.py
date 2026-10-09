@@ -9,6 +9,7 @@ def main():
     whitespace, and digits. A newline read from stdin counts as whitespace.
     Print an AssertionError message if more than one argument is provided.
     """
+
     try:
         if len(sys.argv) > 2:
             raise AssertionError("more than one argument is provided")

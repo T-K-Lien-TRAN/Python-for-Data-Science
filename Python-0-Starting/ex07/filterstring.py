@@ -24,6 +24,7 @@ def main():
         Input:  python3 filterstring.py 3 "Hello the World"
         Output: AssertionError: the arguments are bad
     """
+
     try:
         if len(sys.argv) != 3:
             raise AssertionError("the arguments are bed")
