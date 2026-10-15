@@ -191,3 +191,493 @@ alias norminette=flake8
 ```bash
 deactivate
 ```
+
+Ex02-Module-1:
+Your result is correct! Let's understand **how Python represents an image as a NumPy array**, especially the meaning of `(257, 450, 3)`, the RGB values, and the three levels of brackets `[[[...]]]`.
+
+## 1. What does `(257, 450, 3)` mean?
+
+Your output begins with:
+
+```python
+The shape of image is: (257, 450, 3)
+```
+
+This comes from:
+
+```python
+print("The shape of image is:", pixels.shape)
+```
+
+An RGB image is represented as a **3-dimensional (3D) NumPy array**.
+
+The shape follows this order:
+
+```python
+(height, width, channels)
+```
+
+For your image:
+
+| Value | Meaning | Explanation |
+|---|---|---|
+| 257 | Height | The image contains 257 rows of pixels |
+| 450 | Width | Each row contains 450 pixels |
+| 3 | RGB channels | Each pixel contains 3 color values |
+
+Therefore, your image contains:
+
+\[
+257 \times 450 = 115\,650 \text{ pixels}
+\]
+
+Each pixel has three color values, so the array contains:
+
+\[
+115\,650 \times 3 = 346\,950 \text{ values}
+\]
+
+**Important:** The image has 115,650 pixels, not 346,950 pixels. The latter is the number of individual RGB channel values.
+
+---
+
+## 2. What do the numbers `[19 42 83]` mean?
+
+Look at the first line:
+
+```python
+[[[19 42 83]
+  [23 42 84]
+  [28 43 84]
+```
+
+Each group of three numbers represents **one pixel**.
+
+For example:
+
+```python
+[19 42 83]
+```
+
+corresponds to:
+
+| Channel | Value | Meaning |
+|---|---|---|
+| R (Red) | 19 | Low red intensity |
+| G (Green) | 42 | Low green intensity |
+| B (Blue) | 83 | Moderate blue intensity |
+
+For an ordinary 8-bit RGB image, each channel ranges from:
+
+\[
+0 \leq R,G,B \leq 255
+\]
+
+- `0` means no intensity for that channel.
+- `255` means maximum intensity for that channel.
+
+Therefore:
+
+```python
+[19, 42, 83]
+```
+
+represents a **dark blue color**, because the blue component is stronger than the red and green components.
+
+Other examples:
+
+| RGB values | Color |
+|---|---|
+| `[255, 0, 0]` | Red |
+| `[0, 255, 0]` | Green |
+| `[0, 0, 255]` | Blue |
+| `[255, 255, 255]` | White |
+| `[0, 0, 0]` | Black |
+| `[128, 128, 128]` | Gray |
+| `[255, 255, 0]` | Yellow |
+
+Notice the bottom-right part of your output:
+
+```python
+[0 0 0]
+[1 1 1]
+```
+
+These pixels are black or almost black.
+
+---
+
+## 3. Why are there three opening brackets `[[[`?
+
+This is particularly important for understanding NumPy arrays.
+
+Your output starts with:
+
+```python
+[[[19 42 83]
+  [23 42 84]
+  [28 43 84]
+```
+
+The three brackets represent **three levels of organization**.
+
+### Level 1: Pixel (1D array)
+
+```python
+[19 42 83]
+```
+
+This represents one pixel with three RGB components.
+
+Shape:
+
+```python
+(3,)
+```
+
+### Level 2: Row (2D array)
+
+Imagine a very small image with three pixels per row:
+
+```python
+[
+    [19, 42, 83],
+    [23, 42, 84],
+    [28, 43, 84]
+]
+```
+
+This represents **one row containing three pixels**.
+
+Shape:
+
+```python
+(3, 3)
+```
+
+The first `3` means three pixels.
+
+The second `3` means three RGB values per pixel.
+
+### Level 3: Complete image (3D array)
+
+Now imagine an image containing two rows and three pixels per row:
+
+```python
+pixels = np.array([
+    [
+        [19, 42, 83],
+        [23, 42, 84],
+        [28, 43, 84]
+    ],
+    [
+        [20, 43, 84],
+        [24, 43, 85],
+        [28, 43, 84]
+    ]
+])
+```
+
+Its shape is:
+
+```python
+(2, 3, 3)
+```
+
+Because it contains:
+
+- 2 rows
+- 3 pixels per row
+- 3 color channels per pixel
+
+Your actual image uses the same structure, but its shape is:
+
+```python
+(257, 450, 3)
+```
+
+---
+
+## 4. How to understand the first rows of your output
+
+Let's examine:
+
+```python
+[[[19 42 83]
+  [23 42 84]
+  [28 43 84]
+  ...
+  [69 42 51]
+  [68 41 46]
+  [68 41 46]]
+
+ [[20 43 84]
+  [24 43 85]
+  [28 43 84]
+  ...
+  [71 44 53]
+  [71 42 47]
+  [71 42 47]]
+```
+
+The first block represents **row 0** of your image.
+
+The second block represents **row 1**.
+
+We can visualize their positions:
+
+```text
+                 IMAGE (450 pixels wide)
+
+              Column 0     Column 1     Column 2      ...    Column 449
+
+Row 0         [19,42,83]   [23,42,84]   [28,43,84]    ...    [68,41,46]
+
+Row 1         [20,43,84]   [24,43,85]   [28,43,84]    ...    [71,42,47]
+
+Row 2         [22,44,85]   [25,44,84]   [30,45,86]    ...    [72,43,48]
+
+  .                .            .            .                     .
+  .                .            .            .                     .
+  .                .            .            .                     .
+
+Row 256       [0,0,4]     [0,0,4]      [0,0,4]       ...    [1,1,1]
+```
+
+**Important:** NumPy uses zero-based indexing.
+
+Therefore:
+
+- First row → index `0`
+- Last row → index `256`
+- First column → index `0`
+- Last column → index `449`
+
+---
+
+## 5. Why does NumPy display `...`?
+
+You see:
+
+```python
+[[[19 42 83]
+  [23 42 84]
+  [28 43 84]
+  ...
+  [69 42 51]
+  [68 41 46]
+  [68 41 46]]
+```
+
+The `...` means NumPy has **omitted some values from the printed output**.
+
+It does not mean those pixels are missing from the image.
+
+Your array still contains all 257 rows and 450 columns.
+
+NumPy abbreviates large arrays to avoid printing hundreds of thousands of numbers.
+
+You can access any omitted pixel directly using its indices.
+
+For example:
+
+```python
+print(pixels[100, 200])
+```
+
+This displays the RGB values at row 100, column 200.
+
+---
+
+## 6. How do you access individual pixels?
+
+This is an important skill for your next 42 exercises.
+
+The general syntax is:
+
+```python
+pixels[row, column, channel]
+```
+
+### Example 1: Access the first pixel
+
+```python
+print(pixels[0, 0])
+```
+
+Output:
+
+```text
+[19 42 83]
+```
+
+This is the pixel at the **top-left corner**.
+
+### Example 2: Access the second pixel
+
+```python
+print(pixels[0, 1])
+```
+
+Output:
+
+```text
+[23 42 84]
+```
+
+Notice that `pixels[0, 1]` accesses row 0, column 1.
+
+### Example 3: Access the red component
+
+```python
+print(pixels[0, 0, 0])
+```
+
+Output:
+
+```text
+19
+```
+
+Because:
+
+```python
+pixels[0, 0] = [19, 42, 83]
+```
+
+The RGB channel indices are:
+
+| Channel index | Color | Code |
+|---|---|---|
+| 0 | Red | `pixels[row, col, 0]` |
+| 1 | Green | `pixels[row, col, 1]` |
+| 2 | Blue | `pixels[row, col, 2]` |
+
+For your first pixel:
+
+```python
+print(pixels[0, 0, 0])  # 19 (Red)
+print(pixels[0, 0, 1])  # 42 (Green)
+print(pixels[0, 0, 2])  # 83 (Blue)
+```
+
+### Example 4: Access the bottom-right pixel
+
+```python
+print(pixels[256, 449])
+```
+
+Output:
+
+```text
+[1 1 1]
+```
+
+This is the last pixel shown in your output.
+
+You can also write:
+
+```python
+print(pixels[-1, -1])
+```
+
+The result is identical because `-1` refers to the last element of an array.
+
+---
+
+## 7. Connection with your previous exercise: `slice_me()`
+
+In **ex01**, you learned to slice a 2D array:
+
+```python
+family[start:end]
+```
+
+Now, in **ex02**, your image is a 3D array.
+
+You can apply the same principle.
+
+For example:
+
+```python
+pixels[0:100]
+```
+
+This extracts the first 100 rows of your image.
+
+Its shape is:
+
+```python
+(100, 450, 3)
+```
+
+You can also select both rows and columns:
+
+```python
+pixels[0:100, 0:200]
+```
+
+Its shape is:
+
+```python
+(100, 200, 3)
+```
+
+This extracts a rectangular region from the top-left corner of your image.
+
+Finally, you can select a specific color channel:
+
+```python
+pixels[:, :, 0]
+```
+
+This extracts all red-channel values.
+
+Its shape is:
+
+```python
+(257, 450)
+```
+
+Why only two dimensions?
+
+Because you have selected just one channel instead of all three.
+
+---
+
+## 8. Summary: What you should remember for 42
+
+| Python expression | Meaning | Result |
+|---|---|---|
+| `pixels.shape` | Image dimensions | `(257, 450, 3)` |
+| `pixels.ndim` | Number of dimensions | `3` |
+| `pixels[0]` | First row | Shape `(450, 3)` |
+| `pixels[0, 0]` | First pixel | `[19, 42, 83]` |
+| `pixels[0, 0, 0]` | Red value of first pixel | `19` |
+| `pixels[0, 0, 1]` | Green value of first pixel | `42` |
+| `pixels[0, 0, 2]` | Blue value of first pixel | `83` |
+| `pixels[-1, -1]` | Last pixel | `[1, 1, 1]` |
+| `pixels[0:100]` | First 100 rows | `(100, 450, 3)` |
+| `pixels[:, :, 0]` | Red channel | `(257, 450)` |
+
+### The most important concept
+
+Your image is organized as:
+
+\[
+\boxed{\text{Image} \rightarrow \text{Rows} \rightarrow \text{Pixels} \rightarrow \text{RGB values}}
+\]
+
+In Python:
+
+```python
+pixels[row][column][channel]
+```
+
+or, more conveniently with NumPy:
+
+```python
+pixels[row, column, channel]
+```
+
+**This is the foundation for the next exercises in Python for Data Science**, where you will manipulate image arrays to crop images, extract regions, and work with color channels.
