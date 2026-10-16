@@ -21,8 +21,9 @@ content in RGB format"""
 
 
 def main():
-    """Provide an entry point; tests are in tester.py."""
-    pass
+    """Load landscape.jpg and print its pixel data."""
+
+    print(ft_load("landscape.jpg"))
 
 
 if __name__ == "__main__":

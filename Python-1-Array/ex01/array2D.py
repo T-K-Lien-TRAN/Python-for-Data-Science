@@ -3,6 +3,7 @@ def slice_me(family: list, start: int, end: int) -> list:
     truncated version of the array based on the provided start and end
     arguments
     """
+
     if not isinstance(family, list) or not family:
         raise TypeError("Family must be a non-empty list")
     if type(start) is not int and type(end) is not int:
@@ -20,8 +21,11 @@ def slice_me(family: list, start: int, end: int) -> list:
 
 
 def main():
-    """Provide an entry point; tests are in tester.py."""
-    pass
+    """Slice the 2D family list with different bounds and print the results."""
+
+    family = [[1.80, 78.4], [2.15, 102.7], [2.10, 98.5], [1.88, 75.2]]
+    print(slice_me(family, 0, 2))
+    print(slice_me(family, 1, -2))
 
 
 if __name__ == "__main__":
